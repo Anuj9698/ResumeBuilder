@@ -44,7 +44,8 @@ export default class Header extends React.Component {
           </div>
           <div
             style={{
-              interest,
+              flex: '33%',
+              padding: '0px',
               justifyContent: 'flex-end',
               flexDirection: 'row-reverse'
             }}
