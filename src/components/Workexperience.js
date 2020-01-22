@@ -3,8 +3,24 @@ import React from 'react';
 export default class WorkExperience extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      addpoints: true,
+      point: ''
+    };
   }
+
+  addpoints = () => {
+    this.setState({
+      addpoints: true
+    });
+    console.log(this.state.addpoints);
+  };
+
+  handleChange = event => {
+    this.setState({
+      point: event.target.value
+    });
+  };
 
   render() {
     console.log(this.props.workexp + 'hello');
@@ -27,10 +43,7 @@ export default class WorkExperience extends React.Component {
             </div>
             <div>
               <ul>
-                <li>
-                  Worked passionately in customer service in a high-volume
-                  restaurant.
-                </li>
+                <li>{data.value}</li>
                 <li>Completed the F.A.S.T. customer service training class.</li>
                 <li>
                   Maintained a high tip average thanks to consistent customer

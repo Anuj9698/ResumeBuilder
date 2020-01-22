@@ -7,7 +7,10 @@ export default class Addworkexp extends React.Component {
 
     this.state = {
       modalIsOpen: false,
-      workexp: []
+      workexp: [],
+      inputs: [],
+      points: [],
+      values: []
     };
 
     this.openModal = this.openModal.bind(this);
@@ -28,6 +31,14 @@ export default class Addworkexp extends React.Component {
     this.setState({ modalIsOpen: false });
   }
 
+  appendInput = event => {
+    event.preventDefault();
+    var newInput = `${this.state.inputs.length}`;
+    this.setState(prevState => ({
+      inputs: prevState.inputs.concat([newInput])
+    }));
+  };
+
   handleChange = event => {
     let name = event.target.name;
     let value = event.target.value;
@@ -39,8 +50,19 @@ export default class Addworkexp extends React.Component {
     this.setState({ workexp: newArr });
   };
 
+  handleChangePoints = event => {
+    this.setState({ points: event.target.value });
+    console.log(this.state.points);
+    let newArr = {
+      ...this.state.workexp,
+      value: this.state.points
+    };
+    this.setState({ workexp: newArr });
+  };
+
   handleFormSubmit = () => {
     console.log('hello');
+    console.log(this.state.workexp);
     const { workexp } = this.state;
     let w = this.props.workexp.concat(workexp);
     localStorage.setItem('workexp', JSON.stringify(w));
@@ -49,11 +71,11 @@ export default class Addworkexp extends React.Component {
   render() {
     const customStyles = {
       content: {
-        top: '80%',
+        top: '20%',
         left: '50%',
         right: 'auto',
         bottom: 'auto',
-        marginRight: '50%',
+        marginRight: '-50%',
         transform: 'translate(-50%, -50%)'
       }
     };
@@ -100,6 +122,19 @@ export default class Addworkexp extends React.Component {
               value={this.state.place}
               onChange={this.handleChange}
             />
+
+            {this.state.inputs.map((data, index) => (
+              <div key={index}>
+                <input
+                  type="text"
+                  name="value"
+                  value={this.state.index}
+                  onChange={this.handleChangePoints}
+                />
+              </div>
+            ))}
+
+            <button onClick={this.appendInput}>CLICK ME TO ADD AN INPUT</button>
 
             <button onClick={this.closeModal}>close</button>
             <button onClick={this.handleFormSubmit}>Save Changes</button>
