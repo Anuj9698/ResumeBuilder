@@ -6,6 +6,12 @@ export default class Skills extends React.Component {
     this.state = {};
   }
 
+  deleteSkills = event => {
+    let index = event.target.getAttribute('data-key');
+    this.props.skills.splice(index, 1);
+    localStorage.setItem('skills', JSON.stringify(this.props.skills));
+  };
+
   render() {
     console.log(this.props);
     const container = {
@@ -32,6 +38,9 @@ export default class Skills extends React.Component {
             this.props.skills.map((data, index) => (
               <div className="skills" key={index} style={skills}>
                 {data}
+                <button onClick={this.deleteSkills} data-key={index}>
+                  x
+                </button>
               </div>
             ))}
         </div>

@@ -8,6 +8,7 @@ import AddSkills from './components/AddSkills';
 import Addinterest from './components/Addinterest';
 import Addlanguage from './components/Addlanguages';
 import Addworkexp from './components/Addworkexp';
+import LoginForm from './components/Loginform';
 
 class App extends React.Component {
   constructor(props) {
@@ -51,18 +52,19 @@ class App extends React.Component {
   }
   render() {
     const resume = {
+      // backgroundColor: 'lightblue',
       display: 'flex',
+      flexDirection: 'column',
+      height: '800px',
       flexWrap: 'wrap',
-      padding: '10px'
+      width: '50%'
     };
 
-    const components = {
-      flex: '0 0 45%',
-      padding: '20px'
-    };
+    const components = {};
     console.log('hi');
     return (
       <div>
+        {/* <LoginForm /> */}
         <div>
           <AddSkills saveditem={this.state.name} />
           <Addinterest interest={this.state.interest} />
@@ -72,14 +74,10 @@ class App extends React.Component {
         <div className="App" style={{ width: '60%', margin: 'auto' }}>
           <Header />
           <div className="resume-template" style={resume}>
-            <div className="resume-components" style={components}>
-              <Workexperience workexp={this.state.workexp} />
-            </div>
-            <div className="resume-components" style={components}>
-              <Skills skills={this.state.name} />
-              <Interest interest={this.state.interest} />
-              <Languages language={this.state.language} />
-            </div>
+            <Workexperience workexp={this.state.workexp} style={components} />
+            <Skills skills={this.state.name} style={components} />
+            <Interest interest={this.state.interest} style={components} />
+            <Languages language={this.state.language} style={components} />
           </div>
         </div>
       </div>

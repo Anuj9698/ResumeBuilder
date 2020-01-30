@@ -4,62 +4,128 @@ export default class WorkExperience extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addpoints: true,
-      point: ''
+      editvalue: null,
+      workexp: []
     };
   }
 
-  addpoints = () => {
-    this.setState({
-      addpoints: true
-    });
-    console.log(this.state.addpoints);
+  handleChange = event => {
+    let index = event.target.getAttribute('data-key');
+    let value = event.target.value;
+    let name = event.target.name;
+    alert(index);
+    let newArr = {
+      ...this.props.workexp[index],
+      [name]: value
+    };
+    (async () => {
+      await this.setState({ workexp: newArr });
+
+      console.log(this.state.workexp);
+    })();
   };
 
-  handleChange = event => {
-    this.setState({
-      point: event.target.value
-    });
+  editworkexp = event => {
+    let index = event.target.getAttribute('data-key');
+    alert(index);
+    this.setState({ editvalue: index + '' });
+  };
+
+  deleteworkexp = event => {
+    let index = event.target.getAttribute('data-key');
+    this.props.workexp.splice(index, 1);
+    localStorage.setItem('workexp', JSON.stringify(this.props.workexp));
+  };
+
+  saveworkexp = event => {
+    // let index = event.target.getAttribute('data-key');
+    // localStorage(
+    //   'workexp',
+    //   JSON.stringify((this.props.workexp[index] = this.state.workexp))
+    // );
+    // this.setState({ editvalue: false });
   };
 
   render() {
-    console.log(this.props.workexp + 'hello');
     const container = {
       padding: '10px'
     };
+    const { editvalue } = this.state;
     return (
       <div className="container" style={container}>
+        <h2>Work Experience</h2>
         {this.props.workexp.map((data, index) => (
           <div>
-            <div>
-              <h2>Work Experience</h2>
-
-              <h3>{data.position}</h3>
-              <h4>jkp</h4>
+            {editvalue == index ? (
               <div>
-                cfghjk
-                <div style={{ float: 'right' }}>hjkl</div>
+                <input
+                  type="text"
+                  name="position"
+                  value={data.position}
+                  onChange={this.handleChange}
+                  data-key={index}
+                ></input>
+                <input
+                  type="text"
+                  value={data.companyname}
+                  onChange={this.handleChange}
+                  data-key={index}
+                ></input>
+                <input
+                  type="text"
+                  value={data.Start}
+                  onChange={this.handleChange}
+                  data-key={index}
+                ></input>
+                <input
+                  type="text"
+                  value={data.end}
+                  onChange={this.handleChange}
+                  data-key={index}
+                ></input>
+                <input
+                  type="text"
+                  value={data.place}
+                  onChange={this.handleChange}
+                  data-key={index}
+                ></input>
+                {data.values.map(data => (
+                  <input
+                    type="text"
+                    value={data}
+                    onChange={this.handleValues}
+                    data-key={index}
+                  ></input>
+                ))}
               </div>
-            </div>
-            <div>
-              <ul>
-                <li>{data.value}</li>
-                <li>Completed the F.A.S.T. customer service training class.</li>
-                <li>
-                  Maintained a high tip average thanks to consistent customer
-                  satisfaction.
-                </li>
-                <li>
-                  Worked passionately in customer service in a high-volume
-                  restaurant.
-                </li>
-                <li>Completed the F.A.S.T. customer service training class.</li>
-                <li>
-                  Maintained a high tip average thanks to consistent customer
-                  satisfaction.
-                </li>
-              </ul>
-            </div>
+            ) : (
+              <div>
+                <div>
+                  <h3>{data.position}</h3>
+                  <h4>{data.companyname}</h4>
+                  <div>
+                    {data.Start} to {data.end}
+                    <div style={{ float: 'right' }}> {data.place}</div>
+                  </div>
+                </div>
+                <div>
+                  <ul>
+                    {data.values.map((data, index) => (
+                      <li key={index}>{data}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+            <button onClick={this.editworkexp} data-key={index}>
+              Edit
+            </button>
+            <button onClick={this.deleteworkexp} data-key={index}>
+              delete
+            </button>
+            <button onClick={this.saveworkexp} key={index}>
+              Save
+            </button>
           </div>
         ))}
       </div>

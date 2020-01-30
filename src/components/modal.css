@@ -1,0 +1,27 @@
+.inputform input {
+  width: 100%;
+  padding: 10px;
+  margin: 0 0 10px 0;
+}
+
+.mod {
+  position: absolute;
+  top: 45px;
+  left: 500px;
+  right: 500px;
+  bottom: 40px;
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+}
+
+.mod-btn button {
+  background-color: orangered;
+  color: white;
+  border-radius: 0px;
+  margin: 5px;
+  border-color: orangered;
+}

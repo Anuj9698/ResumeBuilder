@@ -6,6 +6,12 @@ export default class Interest extends React.Component {
     this.state = {};
   }
 
+  deleteInterest = event => {
+    let index = event.target.getAttribute('data-key');
+    this.props.interest.splice(index, 1);
+    localStorage.setItem('interest', JSON.stringify(this.props.interest));
+  };
+
   render() {
     console.log(this.props);
     const container = {
@@ -27,7 +33,12 @@ export default class Interest extends React.Component {
           {this.props.interest &&
             this.props.interest.map((data, index) => (
               <div className="interest" style={interest} key={index}>
-                <li>{data}</li>
+                <li>
+                  {data}
+                  <button onClick={this.deleteInterest} data-key={index}>
+                    x
+                  </button>
+                </li>
               </div>
             ))}
         </div>

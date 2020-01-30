@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import './modal.css';
 
 export default class Addworkexp extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class Addworkexp extends React.Component {
       modalIsOpen: false,
       workexp: [],
       inputs: [],
-      points: [],
+      list: [],
       values: []
     };
 
@@ -50,14 +51,16 @@ export default class Addworkexp extends React.Component {
     this.setState({ workexp: newArr });
   };
 
-  handleChangePoints = event => {
-    this.setState({ points: event.target.value });
-    console.log(this.state.points);
+  handleChangePoints = (event, index) => {
+    this.state.list[index] = event.target.value;
+    this.setState({ list: this.state.list });
     let newArr = {
       ...this.state.workexp,
-      value: this.state.points
+      values: this.state.list
     };
+
     this.setState({ workexp: newArr });
+    console.log(this.state.list);
   };
 
   handleFormSubmit = () => {
@@ -69,24 +72,14 @@ export default class Addworkexp extends React.Component {
   };
 
   render() {
-    const customStyles = {
-      content: {
-        top: '20%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
-      }
-    };
     return (
       <div>
         <button onClick={this.openModal}>Add Work Experience</button>
         <Modal
+          className="mod"
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
-          style={customStyles}
           contentLabel="Example Modal"
         >
           <h2 ref={subtitle => (this.subtitle = subtitle)}>
@@ -97,47 +90,66 @@ export default class Addworkexp extends React.Component {
             you can add a single interest or a multiple interest separated by
             comma ","
           </div>
-          <form>
+          <form className="inputform">
             <input
               type="text"
               name="position"
               value={this.state.position}
+              placeholder="Add Position in Company"
               onChange={this.handleChange}
             />
+            <br />
             <input
               type="text"
               name="companyname"
               value={this.state.companyname}
               onChange={this.handleChange}
+              placeholder="Add Company"
             />
+            <br />
             <input
               type="text"
-              name="date"
+              name="Start"
               value={this.state.date}
               onChange={this.handleChange}
+              placeholder="Start Date"
             />
+            <br />
+            <input
+              type="text"
+              name="end"
+              value={this.state.date}
+              onChange={this.handleChange}
+              placeholder="End Date"
+            />
+            <br />
             <input
               type="text"
               name="place"
               value={this.state.place}
               onChange={this.handleChange}
+              placeholder="Add Company Place"
             />
+            <br />
 
             {this.state.inputs.map((data, index) => (
               <div key={index}>
                 <input
                   type="text"
                   name="value"
-                  value={this.state.index}
-                  onChange={this.handleChangePoints}
+                  onChange={event => this.handleChangePoints(event, index)}
+                  placeholder="Add details of your work"
                 />
               </div>
             ))}
+            <div className="mod-btn">
+              <button onClick={this.appendInput}>
+                CLICK ME TO ADD AN INPUT
+              </button>
 
-            <button onClick={this.appendInput}>CLICK ME TO ADD AN INPUT</button>
-
-            <button onClick={this.closeModal}>close</button>
-            <button onClick={this.handleFormSubmit}>Save Changes</button>
+              <button onClick={this.handleFormSubmit}>Save Changes</button>
+              <button onClick={this.closeModal}>close</button>
+            </div>
           </form>
         </Modal>
       </div>

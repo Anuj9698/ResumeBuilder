@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import './modal.css';
 
 export default class Addskills extends React.Component {
   constructor() {
@@ -43,24 +44,14 @@ export default class Addskills extends React.Component {
   };
 
   render() {
-    const customStyles = {
-      content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
-      }
-    };
     return (
       <div>
         <button onClick={this.openModal}>Add Skill</button>
         <Modal
+          className="mod"
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
-          style={customStyles}
           contentLabel="Example Modal"
         >
           <h2 ref={subtitle => (this.subtitle = subtitle)}>Add Skills</h2>
@@ -69,10 +60,16 @@ export default class Addskills extends React.Component {
             you can add a single skill or a multiple skills separated by comma
             ","
           </div>
-          <form>
-            <input type="text" onChange={this.handleChange} />
-            <button onClick={this.closeModal}>close</button>
-            <button onClick={this.handleFormSubmit}>Save Changes</button>
+          <form className="inputform">
+            <input
+              type="text"
+              onChange={this.handleChange}
+              placeholder="Add Skills"
+            />
+            <div className="mod-btn">
+              <button onClick={this.handleFormSubmit}>Save Changes</button>
+              <button onClick={this.closeModal}>close</button>
+            </div>
           </form>
         </Modal>
       </div>

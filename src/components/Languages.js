@@ -6,6 +6,12 @@ export default class Languages extends React.Component {
     this.state = {};
   }
 
+  deleteLanguage = event => {
+    let index = event.target.getAttribute('data-key');
+    this.props.language.splice(index, 1);
+    localStorage.setItem('language', JSON.stringify(this.props.language));
+  };
+
   render() {
     console.log(this.props);
     const container = {
@@ -27,7 +33,12 @@ export default class Languages extends React.Component {
           {this.props.language &&
             this.props.language.map((data, index) => (
               <div className="interest" style={language} key={index}>
-                <li>{data}</li>
+                <li>
+                  {data}
+                  <button onClick={this.deleteLanguage} data-key={index}>
+                    x
+                  </button>
+                </li>
               </div>
             ))}
         </div>
