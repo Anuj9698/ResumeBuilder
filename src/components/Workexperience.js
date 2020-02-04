@@ -5,29 +5,51 @@ export default class WorkExperience extends React.Component {
     super(props);
     this.state = {
       editvalue: null,
-      workexp: []
+      workexp: [],
+      updateworkexp: [],
+      inputs: [],
+      list: [],
+      values: [],
+      length: null
     };
   }
 
+  appendInput = event => {
+    event.preventDefault();
+    var newInput = `${this.state.inputs.length}`;
+    this.setState(prevState => ({
+      inputs: prevState.inputs.concat([newInput])
+    }));
+  };
+
   handleChange = event => {
-    let index = event.target.getAttribute('data-key');
     let value = event.target.value;
     let name = event.target.name;
-    alert(index);
     let newArr = {
-      ...this.props.workexp[index],
+      ...this.state.workexp,
       [name]: value
     };
-    (async () => {
-      await this.setState({ workexp: newArr });
+    this.setState({ workexp: newArr });
+  };
 
-      console.log(this.state.workexp);
-    })();
+  handleChangePoints = event => {
+    let index = event.target.getAttribute('data-key');
+    this.state.list[index] = event.target.value;
+    this.setState({ list: this.state.list });
+    let newArr = {
+      ...this.state.workexp,
+      values: this.state.list
+    };
+
+    this.setState({ workexp: newArr });
+    console.log(this.state.list);
   };
 
   editworkexp = event => {
     let index = event.target.getAttribute('data-key');
-    alert(index);
+    this.setState({ length: this.props.workexp[index].values.length });
+    this.setState({ list: this.props.workexp[index].values });
+    this.setState({ workexp: this.props.workexp[index] });
     this.setState({ editvalue: index + '' });
   };
 
@@ -38,19 +60,18 @@ export default class WorkExperience extends React.Component {
   };
 
   saveworkexp = event => {
-    // let index = event.target.getAttribute('data-key');
-    // localStorage(
-    //   'workexp',
-    //   JSON.stringify((this.props.workexp[index] = this.state.workexp))
-    // );
-    // this.setState({ editvalue: false });
+    let index = event.target.getAttribute('data-key');
+    this.props.workexp.splice(index, 1);
+    this.props.workexp.push(this.state.workexp);
+    localStorage.setItem('workexp', JSON.stringify(this.props.workexp));
+    this.setState({ editvalue: null });
   };
 
   render() {
     const container = {
       padding: '10px'
     };
-    const { editvalue } = this.state;
+    const { editvalue, workexp } = this.state;
     return (
       <div className="container" style={container}>
         <h2>Work Experience</h2>
@@ -61,42 +82,57 @@ export default class WorkExperience extends React.Component {
                 <input
                   type="text"
                   name="position"
-                  value={data.position}
+                  value={workexp.position}
                   onChange={this.handleChange}
                   data-key={index}
                 ></input>
                 <input
                   type="text"
-                  value={data.companyname}
+                  name="companyname"
+                  value={workexp.companyname}
                   onChange={this.handleChange}
                   data-key={index}
                 ></input>
                 <input
                   type="text"
-                  value={data.Start}
+                  name="Start"
+                  value={workexp.Start}
                   onChange={this.handleChange}
                   data-key={index}
                 ></input>
                 <input
                   type="text"
-                  value={data.end}
+                  name="end"
+                  value={workexp.end}
                   onChange={this.handleChange}
                   data-key={index}
                 ></input>
                 <input
                   type="text"
-                  value={data.place}
+                  name="place"
+                  value={workexp.place}
                   onChange={this.handleChange}
                   data-key={index}
                 ></input>
-                {data.values.map(data => (
+                {workexp.values.map((data, id) => (
                   <input
                     type="text"
                     value={data}
-                    onChange={this.handleValues}
-                    data-key={index}
+                    onChange={this.handleChangePoints}
+                    data-key={id}
                   ></input>
                 ))}
+                {this.state.inputs.map(id => (
+                  <input
+                    type="text"
+                    name="value"
+                    onChange={this.handleChangePoints}
+                    data-key={parseInt(id + this.state.length)}
+                  ></input>
+                ))}
+                <button onClick={this.appendInput} data-key={index}>
+                  CLICK ME TO ADD AN INPUT
+                </button>
               </div>
             ) : (
               <div>
@@ -123,7 +159,7 @@ export default class WorkExperience extends React.Component {
             <button onClick={this.deleteworkexp} data-key={index}>
               delete
             </button>
-            <button onClick={this.saveworkexp} key={index}>
+            <button onClick={this.saveworkexp} data-key={index}>
               Save
             </button>
           </div>

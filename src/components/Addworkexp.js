@@ -102,7 +102,7 @@ export default class Addworkexp extends React.Component {
             <input
               type="text"
               name="companyname"
-              value={this.state.companyname}
+              value={this.state.companyname || ''}
               onChange={this.handleChange}
               placeholder="Add Company"
             />
